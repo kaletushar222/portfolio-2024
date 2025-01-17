@@ -56,19 +56,15 @@
       headers: {'X-Requested-With': 'XMLHttpRequest'}
     })
     .then(response => {
+      console.log("response ----> ", response);
       if( response.ok ) {
-        return response.text();
+        const sentMessage = thisForm.querySelector('.sent-message');
+        if (sentMessage) {
+          sentMessage.style.display = 'block'; // Make the element visible
+        }
+        thisForm.querySelector('.loading').classList.remove('d-block');
       } else {
         throw new Error(`${response.status} ${response.statusText} ${response.url}`); 
-      }
-    })
-    .then(data => {
-      thisForm.querySelector('.loading').classList.remove('d-block');
-      if (data.trim() == 'OK') {
-        thisForm.querySelector('.sent-message').classList.add('d-block');
-        thisForm.reset(); 
-      } else {
-        throw new Error(data ? data : 'Form submission failed and no error message returned from: ' + action); 
       }
     })
     .catch((error) => {
